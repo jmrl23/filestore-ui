@@ -23,28 +23,6 @@ A modern, responsive file management interface built with **Next.js 16**, design
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **TypeScript**: Full type safety with latest ES2022 features
 
-## 🏗️ Architecture
-
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── api/               # API route handlers (proxy layer)
-│   ├── layout.tsx         # Root layout with providers
-│   └── page.tsx           # Main file management page
-├── components/            
-│   ├── files/             # File-related components
-│   ├── providers/         # React context providers
-│   ├── ui/                # Reusable UI components (Shadcn)
-│   └── error-boundary.tsx # Error handling component
-├── hooks/                 # Custom React hooks
-│   ├── use-file-manager.ts # Main file management hook
-│   └── use-debounce.ts    # Debounce utility hook
-└── lib/                   # Utilities and configuration
-    ├── api.ts             # Axios instance
-    ├── constants.ts       # App constants
-    ├── helpers.ts         # Utility functions
-    └── utils.ts           # Shared utilities
-```
 
 ## 🚀 Getting Started
 
@@ -74,11 +52,9 @@ src/
    Create a `.env` file in the root directory:
 
    ```env
-   FILESTORE_SERVICE_API_KEY=your_api_key_here
    FILESTORE_SERVICE_URL=http://localhost:3001
    ```
-
-   - `FILESTORE_SERVICE_API_KEY`: API key for authenticating with the filestore backend
+   
    - `FILESTORE_SERVICE_URL`: URL of your filestore service
 
 4. **Run the development server**:
