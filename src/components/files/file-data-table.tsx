@@ -82,153 +82,169 @@ export function FileDataTable({
 
   if (loading) {
     return (
-      <div className='rounded-md border bg-card'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className='w-[50px]'>
-                <Checkbox disabled />
-              </TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Provider</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {[...Array(5)].map((_, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                  <Skeleton className='h-4 w-4' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-4 w-[200px]' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-4 w-20' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-4 w-[100px]' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-4 w-[120px]' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-4 w-[100px]' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-8 w-[60px]' />
-                </TableCell>
+      <div className='rounded-md border bg-card overflow-hidden'>
+        <div className='overflow-x-auto'>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className='w-[50px]'>
+                  <Checkbox disabled />
+                </TableHead>
+                <TableHead className='min-w-[200px]'>Name</TableHead>
+                <TableHead className='hidden md:table-cell'>Path</TableHead>
+                <TableHead className='hidden lg:table-cell'>Size</TableHead>
+                <TableHead className='hidden xl:table-cell'>Type</TableHead>
+                <TableHead className='hidden sm:table-cell'>Provider</TableHead>
+                <TableHead className='hidden lg:table-cell'>Date</TableHead>
+                <TableHead className='w-[70px]'>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {[...Array(5)].map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <Skeleton className='h-4 w-4' />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className='h-4 w-[200px]' />
+                  </TableCell>
+                  <TableCell className='hidden md:table-cell'>
+                    <Skeleton className='h-4 w-[150px]' />
+                  </TableCell>
+                  <TableCell className='hidden lg:table-cell'>
+                    <Skeleton className='h-4 w-20' />
+                  </TableCell>
+                  <TableCell className='hidden xl:table-cell'>
+                    <Skeleton className='h-4 w-[100px]' />
+                  </TableCell>
+                  <TableCell className='hidden sm:table-cell'>
+                    <Skeleton className='h-4 w-[120px]' />
+                  </TableCell>
+                  <TableCell className='hidden lg:table-cell'>
+                    <Skeleton className='h-4 w-[100px]' />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className='h-8 w-[60px]' />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className='rounded-md border bg-card'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className='w-[50px]'>
-              <Checkbox
-                checked={allSelected}
-                onCheckedChange={onToggleSelectAll}
-              />
-            </TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Size</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Provider</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {files.length === 0 ? (
+    <div className='rounded-md border bg-card overflow-hidden'>
+      <div className='overflow-x-auto'>
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={7} className='h-24 text-center'>
-                No files found.
-              </TableCell>
+              <TableHead className='w-[50px]'>
+                <Checkbox
+                  checked={allSelected}
+                  onCheckedChange={onToggleSelectAll}
+                />
+              </TableHead>
+              <TableHead className='min-w-[200px]'>Name</TableHead>
+              <TableHead className='hidden md:table-cell'>Path</TableHead>
+              <TableHead className='hidden lg:table-cell'>Size</TableHead>
+              <TableHead className='hidden xl:table-cell'>Type</TableHead>
+              <TableHead className='hidden sm:table-cell'>Provider</TableHead>
+              <TableHead className='hidden lg:table-cell'>Date</TableHead>
+              <TableHead className='w-[70px]'>Actions</TableHead>
             </TableRow>
-          ) : (
-            files.map((file) => (
-              <TableRow
-                key={file.id}
-                data-state={selectedFiles.has(file.id) && 'selected'}
-              >
-                <TableCell>
-                  <Checkbox
-                    checked={selectedFiles.has(file.id)}
-                    onCheckedChange={() => onToggleSelect(file.id)}
-                  />
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='flex items-center gap-2 max-w-[300px]'>
-                    <div className='flex items-center justify-center w-8 h-8 rounded bg-muted shrink-0'>
-                      {getFileIcon(file.mimetype)}
-                    </div>
-                    <a
-                      href={file.url}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='truncate hover:underline'
-                      title={file.name}
-                    >
-                      {file.name}
-                    </a>
-                  </div>
-                </TableCell>
-                <TableCell>{formatBytes(file.size)}</TableCell>
-                <TableCell>{file.mimetype}</TableCell>
-                <TableCell>
-                  <Badge variant='secondary'>{file.provider}</Badge>
-                </TableCell>
-                <TableCell>
-                  {new Date(file.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant='ghost' className='h-8 w-8 p-0'>
-                        <span className='sr-only'>Open menu</span>
-                        <MoreHorizontal className='h-4 w-4' />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end'>
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem
-                        onClick={() => window.open(file.url, '_blank')}
-                      >
-                        <ExternalLink className='mr-2 h-4 w-4' />
-                        Open
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <a href={file.url} download>
-                          <Download className='mr-2 h-4 w-4' />
-                          Download
-                        </a>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => setFileToDelete(file.id)}
-                        className='text-red-600 focus:text-red-600 focus:bg-red-50'
-                      >
-                        <Trash className='mr-2 h-4 w-4' />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+          </TableHeader>
+          <TableBody>
+            {files.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className='h-24 text-center'>
+                  No files found.
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ) : (
+              files.map((file) => (
+                <TableRow
+                  key={file.id}
+                  data-state={selectedFiles.has(file.id) && 'selected'}
+                >
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedFiles.has(file.id)}
+                      onCheckedChange={() => onToggleSelect(file.id)}
+                    />
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    <div className='flex items-center gap-2 max-w-[300px]'>
+                      <div className='flex items-center justify-center w-8 h-8 rounded bg-muted shrink-0'>
+                        {getFileIcon(file.mimetype)}
+                      </div>
+                      <a
+                        href={file.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='truncate hover:underline text-sm'
+                        title={file.name}
+                      >
+                        {file.name}
+                      </a>
+                    </div>
+                  </TableCell>
+                  <TableCell className='text-muted-foreground hidden md:table-cell'>
+                    {file.path || '/'}
+                  </TableCell>
+                  <TableCell className='hidden lg:table-cell'>
+                    {formatBytes(file.size)}
+                  </TableCell>
+                  <TableCell className='hidden xl:table-cell text-sm'>
+                    {file.mimetype}
+                  </TableCell>
+                  <TableCell className='hidden sm:table-cell'>
+                    <Badge variant='secondary'>{file.provider}</Badge>
+                  </TableCell>
+                  <TableCell className='hidden lg:table-cell'>
+                    {new Date(file.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant='ghost' className='h-8 w-8 p-0'>
+                          <span className='sr-only'>Open menu</span>
+                          <MoreHorizontal className='h-4 w-4' />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align='end'>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem
+                          onClick={() => window.open(file.url, '_blank')}
+                        >
+                          <ExternalLink className='mr-2 h-4 w-4' />
+                          Open
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <a href={file.url} download>
+                            <Download className='mr-2 h-4 w-4' />
+                            Download
+                          </a>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => setFileToDelete(file.id)}
+                          className='text-red-600 focus:text-red-600 focus:bg-red-50'
+                        >
+                          <Trash className='mr-2 h-4 w-4' />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       <Dialog
         open={!!fileToDelete}
@@ -249,8 +265,8 @@ export function FileDataTable({
             <Button
               onClick={() => {
                 if (fileToDelete) {
-                  onDelete(fileToDelete);
                   setFileToDelete(null);
+                  setTimeout(() => onDelete(fileToDelete), 150);
                 }
               }}
               className='bg-red-600 hover:bg-red-700'
