@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const FILESTORE_SERVICE_URL = process.env.FILESTORE_SERVICE_URL;
-const FILESTORE_SERVICE_API_KEY = process.env.FILESTORE_SERVICE_API_KEY;
 
 // Validate environment variables at startup
-if (!FILESTORE_SERVICE_URL || !FILESTORE_SERVICE_API_KEY) {
+if (!FILESTORE_SERVICE_URL) {
   console.error(
     'Missing required environment variables: FILESTORE_SERVICE_URL and/or FILESTORE_SERVICE_API_KEY',
   );
@@ -33,7 +32,9 @@ async function handler(
   const searchParams = request.nextUrl.searchParams.toString();
 
   // Get API Key from cookies
-  const apiKey = request.cookies.get('filestore_api_key')?.value || process.env.FILESTORE_SERVICE_API_KEY;
+  const apiKey =
+    request.cookies.get('filestore_api_key')?.value ||
+    process.env.FILESTORE_SERVICE_API_KEY;
 
   if (!FILESTORE_SERVICE_URL) {
     return NextResponse.json(
